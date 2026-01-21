@@ -12,7 +12,7 @@ const server = http.createServer(async (req, res) => {
   } else if (req.url.startsWith("/api/continent")) {
     const continent = req.url.split("/").pop();
     const filterContinentDestinations = (await getDataFromDB()).filter(
-      (place) => place.continent === continent,
+      (place) => place.continent.toLowerCase() === continent.toLowerCase(),
     );
     res.statusCode = 200;
     res.setHeader("Content-Type", "application/json");
