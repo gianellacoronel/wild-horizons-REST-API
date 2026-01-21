@@ -3,7 +3,7 @@ import http from "node:http";
 const PORT = 8000;
 
 const server = http.createServer((req, res) => {
-  res.end("Hello from the server!");
+  res.end("A string");
 });
 
-server.listen(PORT, () => console.log(`Server running on port: ${PORT}`));
+server.listen(PORT, console.log(`Server listening on: http://localhost:8000`));
