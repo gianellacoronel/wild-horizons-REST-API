@@ -1,5 +1,5 @@
 import http from "node:http";
-import { getDataFromDB } from "./database/db";
+import { getDataFromDB } from "./database/db.js";
 
 const PORT = 8000;
 
@@ -7,10 +7,21 @@ const server = http.createServer(async (req, res) => {
   const destinations = await getDataFromDB();
   if (req.url === "/api" && req.method === "GET") {
     res.setHeader("Content-Type", "application/json");
-    res.statusCode(200).end(JSON.stringify(destinations));
+    res.statusCode = 200;
+    res.end(JSON.stringify(destinations));
+  } else if (req.url.startsWith("/api/continent")) {
+    const routeParts = req.url.split("/");
+    const continent = routeParts[routeParts.length - 1];
+    const filterContinentDestinations = (await getDataFromDB()).filter(
+      (place) => place.continent === continent,
+    );
+    res.statusCode = 200;
+    res.setHeader("Content-Type", "application/json");
+    res.end(JSON.stringify(filterContinentDestinations));
   } else {
     res.setHeader("Content-Type", "application/json");
-    res.statusCode(404).end(
+    res.statusCode = 404;
+    res.end(
       JSON.stringify({
         error: "not found",
         message: "The requested route does not exist",
