@@ -1,15 +1,13 @@
 import http from "node:http";
+import { getDataFromDB } from "./database/db";
 
 const PORT = 8000;
 
-const server = http.createServer((req, res) => {
-  // res.write helps us to send amount of data
-  // We still need to add res.end
-  res.write("This is some data \n");
-  res.write("This is some data \n");
-
-  //res.end({data}, {encoding type , default utf8}, {callback function that executes at the end of the process})
-  res.end("This is from the server", "utf8", () => console.log("response end"));
+const server = http.createServer(async (req, res) => {
+  const destinations = await getDataFromDB();
+  if (req.url === "/api" && req.method === "GET") {
+    res.end(JSON.stringify(destinations));
+  }
 });
 
 server.listen(PORT, console.log(`Server listening on: http://localhost:8000`));
