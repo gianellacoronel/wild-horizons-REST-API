@@ -10,10 +10,16 @@ const server = http.createServer(async (req, res) => {
     sendJSONResponse(res, 200, destinations);
   } else if (req.url.startsWith("/api/continent")) {
     const continent = req.url.split("/").pop();
-    const filterContinentDestinations = (await getDataFromDB()).filter(
+    const filterContinentDestinations = destinations.filter(
       (place) => place.continent.toLowerCase() === continent.toLowerCase(),
     );
     sendJSONResponse(res, 200, filterContinentDestinations);
+  } else if (req.url.startsWith("/api/country")) {
+    const country = req.url.split("/").pop();
+    const filterCountryDestinations = destinations.filter(
+      (place) => place.country === country,
+    );
+    sendJSONResponse(res, 200, filterCountryDestinations);
   } else {
     sendJSONResponse(res, 404, {
       error: "not found",
