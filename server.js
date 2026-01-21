@@ -11,7 +11,11 @@ const server = http.createServer(async (req, res) => {
     sendJSONResponse(res, 200, destinations);
   } else if (req.url.startsWith("/api/continent")) {
     const continent = req.url.split("/").pop();
-    const filterContinentDestinations(destinations, 'continent', continent);
+    const filterContinentDestinations = getDataByPathParams(
+      destinations,
+      "continent",
+      continent,
+    );
     sendJSONResponse(res, 200, filterContinentDestinations);
   } else if (req.url.startsWith("/api/country")) {
     const country = req.url.split("/").pop();
